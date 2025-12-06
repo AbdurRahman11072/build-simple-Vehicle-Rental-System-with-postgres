@@ -1,6 +1,13 @@
 import { pool } from "../../db/db";
 import { createVehiclesPayload } from "./vehicles.type";
 
+const getAllVehicles = async () => {
+  const result = await pool.query(`
+        SELECT * FROM vehicles`);
+
+  return result;
+};
+
 const createVehicles = async (payload: createVehiclesPayload) => {
   const {
     vehicle_name,
@@ -26,4 +33,5 @@ const createVehicles = async (payload: createVehiclesPayload) => {
 
 export const vehicalesService = {
   createVehicles,
+  getAllVehicles,
 };

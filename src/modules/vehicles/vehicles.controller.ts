@@ -2,6 +2,33 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { vehicalesService } from "./vehicles.service";
 
+const getAllVehicles = async (req: Request, res: Response) => {
+  try {
+    const payload = req.body;
+
+    const result = await vehicalesService.getAllVehicles();
+
+    if (result.rows.length === 0) {
+      return res.status(httpStatus.CREATED).json({
+        success: true,
+        message: "No vehicles found",
+        data: [],
+      });
+    }
+
+    res.status(httpStatus.CREATED).json({
+      success: true,
+      message: "Vehicles retrieved successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 const createVehicles = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
@@ -23,4 +50,5 @@ const createVehicles = async (req: Request, res: Response) => {
 
 export const vehicalesController = {
   createVehicles,
+  getAllVehicles,
 };
