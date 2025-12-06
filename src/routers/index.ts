@@ -4,6 +4,7 @@ import { vehiclesRoutes } from "../modules/vehicles/vehicles.routes";
 import { initDB } from "../db/db";
 import { userController } from "../modules/users/users.controller";
 import { userRoutes } from "../modules/users/users.routes";
+import { bookingRoutes } from "../modules/booking/booking.routes";
 
 const router = Router();
 initDB();
@@ -20,6 +21,10 @@ const modulerRouter = [
   {
     path: "/api/v1/users",
     route: userRoutes,
+  },
+  {
+    path: "/api/v1/booking",
+    route: bookingRoutes,
   },
 ];
 
