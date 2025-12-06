@@ -50,7 +50,7 @@ const signin = async (payload: signinUser) => {
   };
 
   const Token = await jwt.sign(jwtPaylod, Config.JWT_SECRET as string, {
-    expiresIn: 1000 * 60 * 60 * 24 * 30,
+    expiresIn: 1000 * 60 * 60 * 24,
   });
 
   return {
