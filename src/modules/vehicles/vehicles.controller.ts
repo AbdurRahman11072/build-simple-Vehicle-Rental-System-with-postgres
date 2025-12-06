@@ -48,7 +48,64 @@ const createVehicles = async (req: Request, res: Response) => {
   }
 };
 
+const getVehiclesById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = await vehicalesService.getVehiclesById(id as string);
+
+    if (result.rows.length === 0) {
+      return res.status(httpStatus.CREATED).json({
+        success: true,
+        message: "No vehicles found",
+        data: [],
+      });
+    }
+
+    res.status(httpStatus.CREATED).json({
+      success: true,
+      message: "Vehicles retrieved successfully",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "",
+      data: error.message,
+    });
+  }
+};
+const deleteVehiclesById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = await vehicalesService.deleteVehiclesById(id as string);
+
+    if (result.rows.length === 0) {
+      return res.status(httpStatus.CREATED).json({
+        success: true,
+        message: "No vehicles found",
+        data: [],
+      });
+    }
+
+    res.status(httpStatus.CREATED).json({
+      success: true,
+      message: "Vehicles retrieved successfully",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "",
+      data: error.message,
+    });
+  }
+};
+
 export const vehicalesController = {
   createVehicles,
   getAllVehicles,
+  getVehiclesById,
+  deleteVehiclesById,
 };

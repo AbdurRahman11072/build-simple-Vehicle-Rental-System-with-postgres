@@ -31,7 +31,26 @@ const createVehicles = async (payload: createVehiclesPayload) => {
   );
 };
 
+const getVehiclesById = async (payload: string) => {
+  return await pool.query(
+    `
+        SELECT * FROM  vehicles
+        WHERE id= $1`,
+    [payload]
+  );
+};
+const deleteVehiclesById = async (payload: string) => {
+  return await pool.query(
+    `
+        DELETE FROM  vehicles
+        WHERE id= $1`,
+    [payload]
+  );
+};
+
 export const vehicalesService = {
   createVehicles,
   getAllVehicles,
+  getVehiclesById,
+  deleteVehiclesById,
 };
