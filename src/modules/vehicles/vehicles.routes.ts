@@ -5,8 +5,9 @@ import { initDB } from "../../db/db";
 const router = Router();
 initDB();
 router.get("/", vehicalesController.getAllVehicles);
+router.get("/:vehicleId", vehicalesController.getVehiclesById);
 router.post("/", vehicalesController.createVehicles);
-router.get("/:id", vehicalesController.getVehiclesById);
-router.delete("/:id", vehicalesController.deleteVehiclesById);
+router.delete("/:vehicleId", vehicalesController.deleteVehiclesById);
+router.put("/:vehicleId", vehicalesController.updateVehiclesById);
 
 export const vehiclesRoutes = router;

@@ -1,5 +1,5 @@
 import { pool } from "../../db/db";
-import { createVehiclesPayload } from "./vehicles.type";
+import { createVehiclesPayload, updateVehiclesPayload } from "./vehicles.type";
 
 const getAllVehicles = async () => {
   const result = await pool.query(`
@@ -47,10 +47,53 @@ const deleteVehiclesById = async (payload: string) => {
     [payload]
   );
 };
+const updateVehiclesById = async (
+  vehicleId: string,
+  payload: updateVehiclesPayload
+) => {
+  const {
+    vehicle_name,
+    type,
+    registration_number,
+    daily_rent_price,
+    availability_status,
+  } = payload;
+  const isVehiclesExist = await pool.query(
+    `
+        SELECT * FROM vehicles
+        WHERE id = $1`,
+    [vehicleId]
+  );
+  const vehical = isVehiclesExist.rows[0];
+
+  const newVehicle_name = vehicle_name || vehical.vehicle_name;
+  const newType = type || vehical.type;
+  const newRegistration_number =
+    registration_number || vehical.registration_number;
+  const newDaily_rent_price = daily_rent_price || vehical.daily_rent_price;
+  const newAvailability_status =
+    availability_status || vehical.availability_status;
+
+  return await pool.query(
+    `
+    UPDATE vehicles
+    SET vehicle_name= $1, type= $2, registration_number =$3,daily_rent_price =$4,availability_status=$5
+    WHERE id = $6  RETURNING *`,
+    [
+      newVehicle_name,
+      newType,
+      newRegistration_number,
+      newDaily_rent_price,
+      newAvailability_status,
+      vehicleId,
+    ]
+  );
+};
 
 export const vehicalesService = {
   createVehicles,
   getAllVehicles,
   getVehiclesById,
   deleteVehiclesById,
+  updateVehiclesById,
 };

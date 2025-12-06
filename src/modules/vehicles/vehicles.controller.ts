@@ -50,9 +50,9 @@ const createVehicles = async (req: Request, res: Response) => {
 
 const getVehiclesById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { vehicleId } = req.params;
 
-    const result = await vehicalesService.getVehiclesById(id as string);
+    const result = await vehicalesService.getVehiclesById(vehicleId as string);
 
     if (result.rows.length === 0) {
       return res.status(httpStatus.CREATED).json({
@@ -77,9 +77,11 @@ const getVehiclesById = async (req: Request, res: Response) => {
 };
 const deleteVehiclesById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { vehicleId } = req.params;
 
-    const result = await vehicalesService.deleteVehiclesById(id as string);
+    const result = await vehicalesService.deleteVehiclesById(
+      vehicleId as string
+    );
 
     if (result.rows.length === 0) {
       return res.status(httpStatus.CREATED).json({
@@ -103,9 +105,32 @@ const deleteVehiclesById = async (req: Request, res: Response) => {
   }
 };
 
+const updateVehiclesById = async (req: Request, res: Response) => {
+  try {
+    const { vehicleId } = req.params;
+    const payload = req.body;
+
+    const result = await vehicalesService.updateVehiclesById(
+      vehicleId as string,
+      payload
+    );
+    res.status(httpStatus.CREATED).json({
+      success: true,
+      message: "Vehicles updated successfully",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export const vehicalesController = {
   createVehicles,
   getAllVehicles,
   getVehiclesById,
   deleteVehiclesById,
+  updateVehiclesById,
 };
