@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { authConroller } from "./auth.controller";
+import { initDB } from "../../db/db";
 
 const router = Router();
-
-router.post("/signup", authConroller.createUser);
+initDB();
+router.post("/signup", authConroller.singup);
+router.post("/signin", authConroller.signin);
 
 export const authRoutes = router;
