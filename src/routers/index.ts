@@ -23,7 +23,7 @@ const modulerRouter = [
     route: userRoutes,
   },
   {
-    path: "/api/v1/booking",
+    path: "/api/v1/bookings",
     route: bookingRoutes,
   },
 ];

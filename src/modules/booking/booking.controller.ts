@@ -23,6 +23,27 @@ const addBooking = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getAllBooking = async (req: Request, res: Response) => {
+  try {
+    const role = req.user?.role;
+    console.log(role);
+
+    const result = await bookingService.getAllBooking(role as string);
+    res.status(httpsStatus.CREATED).json({
+      success: true,
+      message: "Bookings retrieved successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(httpsStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Something went wrong. Please try again!!",
+      error: error.message,
+    });
+  }
+};
 export const bookingController = {
   addBooking,
+  getAllBooking,
 };

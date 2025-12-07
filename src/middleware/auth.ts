@@ -1,3 +1,4 @@
+import { AuthUser } from "./../utils/auth.d";
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -25,6 +26,13 @@ export const auth = (role: string[]) => {
         message: "Your are not authorized",
       });
     }
+
+    req.user = {
+      name: decode.name,
+      email: decode.email,
+      phone: decode.phone,
+      role: decode.role,
+    };
 
     next();
   };
