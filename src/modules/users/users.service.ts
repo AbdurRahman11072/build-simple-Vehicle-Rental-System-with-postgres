@@ -33,6 +33,17 @@ const updateUser = async (userId: string, payload: signupUser) => {
 };
 
 const deleteUserById = async (payload: string) => {
+  const is_user_have_booking = await pool.query(
+    `SELECT customer_id, status FROM bookings WHERE customer_id =$1 AND status= 'active'`,
+    [payload]
+  );
+
+  if (is_user_have_booking.rows.length !== 0) {
+    throw new Error(
+      "User have booked a vehicles. Please try deleting user after vehicle is returned"
+    );
+  }
+
   return await pool.query(
     `
         DELETE FROM  users
