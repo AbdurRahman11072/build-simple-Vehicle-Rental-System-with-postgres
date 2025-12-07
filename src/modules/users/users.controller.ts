@@ -29,6 +29,7 @@ const getAllUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
+    const id = req.user?.id;
     const payload = req.body;
     const result = await userService.updateUser(userId as string, payload);
 
