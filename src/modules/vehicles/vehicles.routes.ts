@@ -5,7 +5,7 @@ import { auth } from "../../middleware/auth";
 
 const router = Router();
 
-router.get("/", auth(["admin"]), vehicalesController.getAllVehicles);
+router.get("/", vehicalesController.getAllVehicles);
 router.get("/:vehicleId", vehicalesController.getVehiclesById);
 router.post("/", auth(["admin"]), vehicalesController.createVehicles);
 router.delete(

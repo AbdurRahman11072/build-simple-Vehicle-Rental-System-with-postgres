@@ -1,4 +1,5 @@
 import { pool } from "../../db/db";
+import { updateExpiredBookings } from "../../helper/updateExpirebooking";
 
 const addBooking = async (payload: any) => {
   const { customer_id, vehicle_id, rent_start_date, rent_end_date } = payload;
@@ -67,6 +68,7 @@ const addBooking = async (payload: any) => {
 };
 
 const getAllBooking = async (role: string) => {
+  await updateExpiredBookings();
   if (role === "admin") {
     return await pool.query(`SELECT 
           b.id,
