@@ -1,3 +1,4 @@
+import { error } from "console";
 import { pool } from "../../db/db";
 import { VehiclesBooking } from "./booking.type";
 
@@ -105,7 +106,44 @@ const getAllBooking = async (role: string) => {
         `);
 };
 
+const updateBooking = async (id: string, status: string, role: string) => {
+  if (role === "customer" && status === "returned") {
+    throw new Error("Unauthorized access");
+  }
+  const isBookingExist = await pool.query(
+    `SELECT * FROM bookings WHERE id = $1`,
+    [id]
+  );
+  if (isBookingExist.rows.length === 0) {
+    throw new Error("Booking doesn't exist please book vehicles first");
+  }
+
+  const update_Booking = await pool.query(
+    `UPDATE bookings
+    SET status = $1 WHERE id = $2 RETURNING id, customer_id, vehicle_id, rent_start_date, rent_end_date, total_price, status`,
+    [status, id]
+  );
+
+  if (!update_Booking) {
+    throw new Error("Failed to update booking information. Please try again");
+  }
+  const update_Vehicles_Info = await pool.query(
+    `UPDATE vehicles
+    SET availability_status = 'available' WHERE id = $1 RETURNING availability_status`,
+    [update_Booking.rows[0].vehicle_id]
+  );
+
+  if (role === "customer") {
+    return update_Booking.rows[0];
+  }
+  return {
+    ...update_Booking.rows[0],
+    verhicles: update_Vehicles_Info.rows[0],
+  };
+};
+
 export const bookingService = {
   addBooking,
   getAllBooking,
+  updateBooking,
 };

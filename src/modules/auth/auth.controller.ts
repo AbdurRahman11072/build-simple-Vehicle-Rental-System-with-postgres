@@ -27,7 +27,7 @@ const signin = async (req: Request, res: Response) => {
 
     const result = await authService.signin(payload);
 
-    res.status(httpStatus.CREATED).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: "User registered successfully",
       data: result,
