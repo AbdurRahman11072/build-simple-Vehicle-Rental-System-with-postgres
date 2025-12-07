@@ -89,7 +89,7 @@ const deleteVehiclesById = async (req: Request, res: Response) => {
       return res.status(httpStatus.NOT_FOUND).json({
         success: true,
         message: "Vehicle deleted successfully",
-        data: [],
+        data: null,
       });
     }
 

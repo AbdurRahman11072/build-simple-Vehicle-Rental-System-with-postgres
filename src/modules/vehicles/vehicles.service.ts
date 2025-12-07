@@ -40,6 +40,17 @@ const getVehiclesById = async (payload: string) => {
   );
 };
 const deleteVehiclesById = async (payload: string) => {
+  const is_user_have_booking = await pool.query(
+    `SELECT customer_id, status FROM bookings WHERE vehicle_id =$1 AND status= 'active'`,
+    [payload]
+  );
+
+  if (is_user_have_booking.rows.length !== 0) {
+    throw new Error(
+      "Vehicle has been booked. Please try deleting vehicle after vehicle is returned"
+    );
+  }
+
   return await pool.query(
     `
         DELETE FROM  vehicles
