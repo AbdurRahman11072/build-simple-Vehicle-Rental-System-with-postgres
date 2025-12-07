@@ -17,7 +17,8 @@ const singup = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: error.message,
+      message: "User registered failed",
+      error: error.message,
     });
   }
 };
@@ -29,13 +30,14 @@ const signin = async (req: Request, res: Response) => {
 
     res.status(httpStatus.OK).json({
       success: true,
-      message: "User registered successfully",
+      message: "Login successful",
       data: result,
     });
   } catch (error: any) {
-    res.status(httpStatus.BAD_REQUEST).json({
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: error.message,
+      message: "Login failed. Something went wrong",
+      error: error.message,
     });
   }
 };

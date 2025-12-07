@@ -4,27 +4,26 @@ import { vehicalesService } from "./vehicles.service";
 
 const getAllVehicles = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-
     const result = await vehicalesService.getAllVehicles();
 
     if (result.rows.length === 0) {
-      return res.status(httpStatus.CREATED).json({
+      return res.status(httpStatus.OK).json({
         success: true,
         message: "No vehicles found",
         data: [],
       });
     }
 
-    res.status(httpStatus.CREATED).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: "Vehicles retrieved successfully",
       data: result.rows,
     });
   } catch (error: any) {
-    res.status(httpStatus.BAD_REQUEST).json({
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong. Please try again!!",
+      error: error.message,
     });
   }
 };
@@ -43,7 +42,9 @@ const createVehicles = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(httpStatus.BAD_REQUEST).json({
       success: false,
-      message: error.message,
+      message:
+        "Failed to create vehicles. Something went wrong. Please try again!!",
+      error: error.message,
     });
   }
 };
@@ -55,14 +56,14 @@ const getVehiclesById = async (req: Request, res: Response) => {
     const result = await vehicalesService.getVehiclesById(vehicleId as string);
 
     if (result.rows.length === 0) {
-      return res.status(httpStatus.CREATED).json({
+      return res.status(httpStatus.OK).json({
         success: true,
         message: "No vehicles found",
         data: [],
       });
     }
 
-    res.status(httpStatus.CREATED).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: "Vehicles retrieved successfully",
       data: result.rows[0],
@@ -70,8 +71,9 @@ const getVehiclesById = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "",
-      data: error.message,
+      message:
+        "Vehicles retrieved failed. Something went wrong. Please try again!!",
+      error: error.message,
     });
   }
 };
@@ -84,14 +86,14 @@ const deleteVehiclesById = async (req: Request, res: Response) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(httpStatus.CREATED).json({
+      return res.status(httpStatus.NOT_FOUND).json({
         success: true,
-        message: "No vehicles found",
+        message: "Vehicle deleted successfully",
         data: [],
       });
     }
 
-    res.status(httpStatus.CREATED).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: "Vehicles retrieved successfully",
       data: null,
@@ -99,8 +101,8 @@ const deleteVehiclesById = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "",
-      data: error.message,
+      message: "Something went wrong. Please try again!!",
+      error: error.message,
     });
   }
 };
@@ -114,7 +116,7 @@ const updateVehiclesById = async (req: Request, res: Response) => {
       vehicleId as string,
       payload
     );
-    res.status(httpStatus.CREATED).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: "Vehicles updated successfully",
       data: result.rows[0],
@@ -122,7 +124,8 @@ const updateVehiclesById = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: error.message,
+      message: "Something went wrong. Please try again!!",
+      error: error.message,
     });
   }
 };

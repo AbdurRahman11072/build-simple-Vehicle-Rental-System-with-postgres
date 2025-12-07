@@ -12,7 +12,7 @@ const singup = async (payload: signupUser) => {
   return await pool.query(
     `
            INSERT INTO users (name, email, password, phone, role)
-        VALUES ($1, $2, $3, $4, $5) RETURNING *
+        VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, phone, role
           `,
     [name, email, hashPassword, phone, role]
   );

@@ -30,7 +30,7 @@ const getAllBooking = async (req: Request, res: Response) => {
     console.log(role);
 
     const result = await bookingService.getAllBooking(role as string);
-    res.status(httpsStatus.CREATED).json({
+    res.status(httpsStatus.OK).json({
       success: true,
       message: "Bookings retrieved successfully",
       data: result.rows,

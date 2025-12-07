@@ -1,6 +1,4 @@
-import { error } from "console";
 import { pool } from "../../db/db";
-import { VehiclesBooking } from "./booking.type";
 
 const addBooking = async (payload: any) => {
   const { customer_id, vehicle_id, rent_start_date, rent_end_date } = payload;
@@ -11,6 +9,12 @@ const addBooking = async (payload: any) => {
     WHERE id = $1`,
     [vehicle_id]
   );
+  // const vehicleBookedDate = await pool.query(
+  //   `
+  //   SELECT rent_end_date FROM bookings
+  //   WHERE vehicle_id = $1`,
+  //   [vehicle_id]
+  // );
 
   const vehicle = isVehicleExist.rows[0];
 
