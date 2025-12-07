@@ -28,6 +28,7 @@ export const auth = (role: string[]) => {
     }
 
     req.user = {
+      id: decode.id,
       name: decode.name,
       email: decode.email,
       phone: decode.phone,

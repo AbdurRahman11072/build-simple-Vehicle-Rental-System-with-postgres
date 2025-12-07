@@ -6,7 +6,16 @@ const getAllUser = async () => {
         SELECT * FROM users`);
 };
 
-const updateUser = async (userId: string, payload: signupUser) => {
+const updateUser = async (
+  userId: string,
+  payload: signupUser,
+  id: string,
+  userrole: string
+) => {
+  if (userId === id || userrole !== "admin") {
+    throw new Error("Unauthorized access");
+  }
+
   const { name, email, phone, role } = payload;
   const isUserExist = await pool.query(
     `
