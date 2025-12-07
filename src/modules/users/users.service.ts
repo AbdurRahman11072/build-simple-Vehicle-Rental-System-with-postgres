@@ -12,8 +12,14 @@ const updateUser = async (
   id: string,
   userrole: string
 ) => {
-  if (userId === id || userrole !== "admin") {
-    throw new Error("Unauthorized access");
+  console.log(id, userId, userrole);
+
+  console.log(userId !== id.toString() || userrole !== "admin");
+
+  if (userrole === "customer") {
+    if (userId !== id.toString()) {
+      throw new Error("Unauthorize access");
+    }
   }
 
   const { name, email, phone, role } = payload;
